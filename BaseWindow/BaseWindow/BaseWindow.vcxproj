@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseWindow.h" />
+    <ClInclude Include="Bitmap\TtApplication.h" />
     <ClInclude Include="Bitmap\TtBitmap.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseWindow.cpp" />
+    <ClCompile Include="Bitmap\TtApplication.cpp" />
     <ClCompile Include="Bitmap\TtBitmap.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 #include "TtBitmap.h"
+#include "TtApplication.h"
 
 TtBitmap::TtBitmap()
 {
@@ -39,6 +40,51 @@ bool TtBitmap::SetSize(HDC hDC, int w, int h)
 		SelectObject(mMemHDC, mBitmap);
 	}
 	return true;
+}
+
+bool TtBitmap::LoadBmp(const char* file)
+{
+	Cleanup();
+
+	std::ifstream bmpfile(file, std::ios::in | std::ios::binary);
+	if (bmpfile.is_open() == false)
+	{
+		return false;
+	}
+	BITMAPFILEHEADER bmpHeader{};
+	bmpfile.read((char*)&bmpHeader, sizeof(bmpHeader));
+	if (bmpHeader.bfType != 0x4d42)
+		return false;
+
+	bmpfile.read((char*)&mBmpHead, sizeof(mBmpHead));
+
+	mPixels.resize(mBmpHead.biWidth * mBmpHead.biHeight);
+
+	switch (mBmpHead.biBitCount)
+	{
+		case 24:
+			{
+				int rowPitch = mBmpHead.biWidth * sizeof(BYTE) * 3;
+				for (int y = 0; y < mBmpHead.biHeight; y++)
+				{
+					for (int x = 0; x < mBmpHead.biWidth; x++)
+					{
+						bmpfile.read((char*)&mPixels[y * mBmpHead.biWidth + x], sizeof(BYTE) * 3);
+					}
+				}
+			}
+			break;
+		case 32:
+			{
+				bmpfile.read((char*)&mPixels[0], sizeof(BYTE) * 4 * mBmpHead.biWidth * mBmpHead.biWidth);
+			}
+			break;
+		default:
+			return false;
+	}
+
+	bmpfile.close();
+	return false;
 }
 
 bool TtBitmap::DrawToDC(HDC hDC, int x, int y, int w, int h, int sx, int sy)

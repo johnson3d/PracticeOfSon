@@ -2,6 +2,9 @@
 #include "../framework.h"
 #include <wingdi.h>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
 
 #pragma pack(push)
 #pragma pack(4)
@@ -39,10 +42,10 @@ public:
 	TtBitmap();
 	~TtBitmap();
 	void Cleanup();
-	int GetWidth() {
+	int GetWidth() const{
 		return mBmpHead.biWidth;
 	}
-	int GetHeight() {
+	int GetHeight() const {
 		return mBmpHead.biHeight;
 	}
 	void SetPixel(int x, int y, TtRGBA color)
@@ -63,7 +66,15 @@ public:
 	const TtRGBA& operator()(int x, int y) const{
 		return GetPixel(x, y);
 	}
+	void Clear(const TtRGBA& color)
+	{
+		for (size_t i = 0; i < mPixels.size(); i++)
+		{
+			mPixels[i] = color;
+		}
+	}
 	bool SetSize(HDC hDC, int w, int h);
+	bool LoadBmp(const char* file);
 	void FlushPixels();
 	bool DrawToDC(HDC hDC, int x, int y, int w, int h, int sx, int sy);
 };

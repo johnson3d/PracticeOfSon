@@ -4,6 +4,7 @@
 #include "framework.h"
 #include "BaseWindow.h"
 #include "Bitmap/TtBitmap.h"
+#include "Bitmap/TtApplication.h"
 #include <string>
 
 #define MAX_LOADSTRING 100
@@ -47,6 +48,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
+    TtApplication::Get()->Initialize();
+
+	TtBitmap bmp;
+	bmp.LoadBmp(TtApplication::Get()->GetAbsPath("/test.bmp").c_str());
+
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_BASEWINDOW));
 
     MSG msg;
@@ -86,6 +92,7 @@ void TickOnIdle(HWND hWnd)
     int x = BackBuffer.GetWidth();
     int y = BackBuffer.GetHeight();
     
+    BackBuffer.Clear(TtRGBA(0, 0, 0, 0));
     for (int i = 0; i < x; i++)
     {
         BackBuffer.SetPixel(i, y / 2, TtRGBA(0xff, 0, 0, 0xff));

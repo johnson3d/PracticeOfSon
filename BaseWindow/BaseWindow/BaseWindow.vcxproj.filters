@@ -33,12 +33,18 @@
     <ClInclude Include="Bitmap\TtBitmap.h">
       <Filter>Bitmap</Filter>
     </ClInclude>
+    <ClInclude Include="Bitmap\TtApplication.h">
+      <Filter>Bitmap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseWindow.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Bitmap\TtBitmap.cpp">
+      <Filter>Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap\TtApplication.cpp">
       <Filter>Bitmap</Filter>
     </ClCompile>
   </ItemGroup>
