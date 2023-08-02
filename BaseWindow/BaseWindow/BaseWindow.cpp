@@ -24,6 +24,7 @@ HWND                hWindow = nullptr;
 BOOL                GAppRun = TRUE;
 HDC                 hDC = nullptr;
 TtBitmap            BackBuffer;
+TtBitmap            Bmp01;
 
 void TickOnIdle(HWND hwnd);
 
@@ -50,8 +51,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     TtApplication::Get()->Initialize();
 
-	TtBitmap bmp;
-	bmp.LoadBmp(TtApplication::Get()->GetAbsPath("/test.bmp").c_str());
+    Bmp01.LoadBmp(hDC, TtApplication::Get()->GetAbsPath("/test.bmp").c_str());
+    Bmp01.FlushPixels();
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_BASEWINDOW));
 
@@ -103,6 +104,7 @@ void TickOnIdle(HWND hWnd)
 	}
     BackBuffer.FlushPixels();
     BackBuffer.DrawToDC(hDC, 0, 0, BackBuffer.GetWidth(), BackBuffer.GetHeight(), 0, 0);
+    Bmp01.DrawToDC(hDC, 0, 0, Bmp01.GetWidth(), Bmp01.GetHeight(), 0, 0);
 }
 
 //

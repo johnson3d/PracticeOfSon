@@ -8,6 +8,12 @@
 
 #pragma pack(push)
 #pragma pack(4)
+struct TtRGB
+{
+	BYTE Blue;
+	BYTE Green;
+	BYTE Red;
+};
 struct TtRGBA
 {
 	BYTE Blue;
@@ -74,7 +80,7 @@ public:
 		}
 	}
 	bool SetSize(HDC hDC, int w, int h);
-	bool LoadBmp(const char* file);
+	bool LoadBmp(HDC hDC, const char* file);
 	void FlushPixels();
 	bool DrawToDC(HDC hDC, int x, int y, int w, int h, int sx, int sy);
 };

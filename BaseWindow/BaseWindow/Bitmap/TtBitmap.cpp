@@ -42,7 +42,7 @@ bool TtBitmap::SetSize(HDC hDC, int w, int h)
 	return true;
 }
 
-bool TtBitmap::LoadBmp(const char* file)
+bool TtBitmap::LoadBmp(HDC hDC, const char* file)
 {
 	Cleanup();
 
@@ -58,18 +58,23 @@ bool TtBitmap::LoadBmp(const char* file)
 
 	bmpfile.read((char*)&mBmpHead, sizeof(mBmpHead));
 
-	mPixels.resize(mBmpHead.biWidth * mBmpHead.biHeight);
-
+	SetSize(hDC, mBmpHead.biWidth, mBmpHead.biHeight);
+	
+	bmpfile.seekg(bmpHeader.bfOffBits, bmpfile.beg);
+	if (mBmpHead.biCompression != BI_RGB)
+		return false;
 	switch (mBmpHead.biBitCount)
 	{
 		case 24:
 			{
-				int rowPitch = mBmpHead.biWidth * sizeof(BYTE) * 3;
+				int rowPitch = mBmpHead.biWidth * sizeof(TtRGB);
+				rowPitch = ((rowPitch + (4 - 1))/ 4) * 4;
 				for (int y = 0; y < mBmpHead.biHeight; y++)
 				{
+					bmpfile.seekg(bmpHeader.bfOffBits + y * rowPitch, bmpfile.beg);
 					for (int x = 0; x < mBmpHead.biWidth; x++)
 					{
-						bmpfile.read((char*)&mPixels[y * mBmpHead.biWidth + x], sizeof(BYTE) * 3);
+						bmpfile.read((char*)&mPixels[y * mBmpHead.biWidth + x], sizeof(TtRGB));
 					}
 				}
 			}
